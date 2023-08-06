@@ -11,20 +11,24 @@ from fitness_agent import FitnessAgent
 logging.basicConfig(level=logging.INFO)
 logger = logging.getLogger(__name__)
 
+
 def set_openai_api_key(api_key):
     openai.api_key = api_key
     os.environ["OPENAI_API_KEY"] = api_key
     return "OpenAI API Key set successfully."
 
+
 def set_nut_api_key(api_key):
     os.environ["NUT_API_KEY"] = api_key
     return "Nutrition API Key set successfully."
+
 
 # Initialize the global fitness_agent
 fitness_agent = None
 
 # Initialize a lock for the fitness_agent
 fitness_agent_lock = threading.Lock()
+
 
 def get_response(openai_api_key, nut_api_key, user_input, action=None):
     global fitness_agent
@@ -42,7 +46,8 @@ def get_response(openai_api_key, nut_api_key, user_input, action=None):
     memory = fitness_agent.agent.chat_history
 
     # Iterate through messages in ChatMessageHistory and format the output
-    updated_conversation = '<div style="background-color: hsl(30, 100%, 30%); color: white; padding: 5px; margin-bottom: 10px; text-align: center; font-size: 1.5em;">Chat History</div>'
+    updated_conversation = ('<div style="background-color: hsl(30, 100%, 30%); color: white; padding: 5px; '
+                            'margin-bottom: 10px; text-align: center; font-size: 1.5em;">Chat History</div>')
     logger.info(memory)
     for i, message in enumerate(memory):
         if i != 0:
@@ -56,12 +61,13 @@ def get_response(openai_api_key, nut_api_key, user_input, action=None):
                 text_color = "#000000"  # Black text
 
             formatted_message = message["content"].replace('\n', '<br>')
-            
-            updated_conversation += f'<div style="color: {text_color}; background-color: {background_color}; margin: 5px; padding: 5px;">{prefix}<br>{formatted_message}</div>'
+
+            updated_conversation += (f'<div style="color: {text_color}; background-color: {background_color}; margin: '
+                                     f'5px; padding: 5px;">{prefix}<br>{formatted_message}</div>')
     return updated_conversation
 
-def main():
 
+def main():
     openai_api_key = gr.components.Textbox(
         lines=1,
         label="Enter OpenAI API Key",
@@ -95,10 +101,11 @@ def main():
         outputs=[output_history],
         title="Fitness Agent",
         description="A simple chatbot using a Fitness Agent and Gradio with conversation history",
-        allow_flagging=False,
+        allow_flagging="never",
     )
 
     iface.launch()
+
 
 if __name__ == "__main__":
     main()

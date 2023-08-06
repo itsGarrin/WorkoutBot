@@ -1,4 +1,6 @@
-requests
-openai
+requests~=2.31.0
+openai~=0.27.8
 langchain
-gradio
+gradio~=3.39.0
+hupper~=1.12
+python-dotenv~=1.0.0
